@@ -74,7 +74,6 @@ nmap <C-K> <C-W><C-K>
 nmap <C-H> <C-W><C-H>
 nmap <C-L> <C-W><C-L>
 
-
 " H K L J should move the cursor
 noremap J <C-d>
 noremap K <C-U>
@@ -93,7 +92,6 @@ noremap gW B
 
 " Redo
 nnoremap U <C-r>
-
 
 " ---------------------- Split Manager ----------------------
 " ---------------------- NERDTREE      ----------------------
@@ -121,7 +119,6 @@ if has("gui_running")
     set guioptions-=r  " remove right-hand scroll bar
     set guioptions-=L  " remove left-hand scroll bar
 end
-
 
 " allow Tab and Shift+Tab to
 " tab  selection in visual mode
@@ -188,7 +185,6 @@ set guifont=Source\ Code\ Pro\ for\ Powerline\ 10
 highlight ColorColumn ctermbg=lightgray guibg=lightgray
 syntax enable
 
-
 " Enable 256 colors on gnome-terinal
 set t_Co=256
 
@@ -207,7 +203,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" start plugin defintion
+" Start plugin defintion
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/L9'
 Plugin 'vim-scripts/FuzzyFinder'
@@ -221,11 +217,13 @@ Plugin 'tomtom/tlib_vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-commentary'
 
-" Snippets 
+" Autocomplete & Snippets 
+Plugin 'Shougo/neocomplete.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'tobyS/pdv'
 Plugin 'tobyS/vmustache'
+Plugin 'ervandew/supertab'     
 
 " -- Front End
 Plugin 'mattn/emmet-vim'            
@@ -237,13 +235,13 @@ Plugin 'skwp/greplace.vim'
 " -- Back end
 Plugin 'StanAngeloff/php.vim'     
 Plugin 'arnaud-lb/vim-php-namespace'     
-Plugin 'ervandew/supertab'     
 Plugin 'ludovicchabant/vim-gutentags'
 
 Plugin 'Shougo/vimproc.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'fatih/vim-go'
+Plugin 'joonty/vdebug'
 
 " end plugin definition
 call vundle#end()            " required for vundle
@@ -302,3 +300,81 @@ nnoremap <leader>d :call pdv#DocumentWithSnip()<CR>
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+" neocomplete
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" enable omni-completion for Ruby and PHP
+call neocomplete#util#set_default_dictionary(
+            \'g:neocomplete#sources#omni#input_patterns', 'ruby',
+            \'[^. *\t]\.\h\w*\|\h\w*::\w*')
+call neocomplete#util#set_default_dictionary(
+            \'g:neocomplete#sources#omni#input_patterns',
+            \'php',
+            \'[^. \t]->\h\w*\|\h\w*::\w*')
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
