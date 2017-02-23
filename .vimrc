@@ -74,6 +74,7 @@ nmap <C-K> <C-W><C-K>
 nmap <C-H> <C-W><C-H>
 nmap <C-L> <C-W><C-L>
 
+
 " H K L J should move the cursor
 noremap J <C-d>
 noremap K <C-U>
@@ -92,6 +93,7 @@ noremap gW B
 
 " Redo
 nnoremap U <C-r>
+
 
 " ---------------------- Split Manager ----------------------
 " ---------------------- NERDTREE      ----------------------
@@ -119,6 +121,7 @@ if has("gui_running")
     set guioptions-=r  " remove right-hand scroll bar
     set guioptions-=L  " remove left-hand scroll bar
 end
+
 
 " allow Tab and Shift+Tab to
 " tab  selection in visual mode
@@ -185,10 +188,14 @@ set guifont=Source\ Code\ Pro\ for\ Powerline\ 10
 highlight ColorColumn ctermbg=lightgray guibg=lightgray
 syntax enable
 
+
 " Enable 256 colors on gnome-terinal
 set t_Co=256
 
-colorscheme atom-dark-256
+" colorscheme atom-dark-256
+colorscheme gruvbox
+set background=dark
+let g:gruvbox_contrast_dark='medium'
 if has("gui_running")
     colorscheme atom-dark
 endif
@@ -203,7 +210,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" Start plugin defintion
+" start plugin defintion
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/L9'
 Plugin 'vim-scripts/FuzzyFinder'
@@ -216,14 +223,14 @@ Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-commentary'
+Plugin 'ervandew/supertab'     
 
-" Autocomplete & Snippets 
+" Snippets 
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'tobyS/pdv'
 Plugin 'tobyS/vmustache'
-Plugin 'ervandew/supertab'     
 
 " -- Front End
 Plugin 'mattn/emmet-vim'            
@@ -236,12 +243,18 @@ Plugin 'skwp/greplace.vim'
 Plugin 'StanAngeloff/php.vim'     
 Plugin 'arnaud-lb/vim-php-namespace'     
 Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'shawncplus/phpcomplete.vim'
 
 Plugin 'Shougo/vimproc.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'fatih/vim-go'
 Plugin 'joonty/vdebug'
+
+" Colors
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'dracula/vim'
+Plugin 'morhetz/gruvbox'
 
 " end plugin definition
 call vundle#end()            " required for vundle
@@ -358,23 +371,24 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" autocmd FileType php setlocal omnifunc=phpcomplete_extended#CompletePHP
 " enable omni-completion for Ruby and PHP
-call neocomplete#util#set_default_dictionary(
-            \'g:neocomplete#sources#omni#input_patterns', 'ruby',
-            \'[^. *\t]\.\h\w*\|\h\w*::\w*')
-call neocomplete#util#set_default_dictionary(
-            \'g:neocomplete#sources#omni#input_patterns',
-            \'php',
-            \'[^. \t]->\h\w*\|\h\w*::\w*')
+    " call neocomplete#util#set_default_dictionary(
+    "       \'g:neocomplete#sources#omni#input_patterns', 'ruby',
+    "       \'[^. *\t]\.\h\w*\|\h\w*::\w*')
+    " call neocomplete#util#set_default_dictionary(
+    "       \'g:neocomplete#sources#omni#input_patterns',
+    "       \'php',
+    "       \'[^. \t]->\h\w*\|\h\w*::\w*')
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+" let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+" let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
