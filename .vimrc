@@ -214,42 +214,44 @@ Plugin 'gmarik/Vundle.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/L9'
 Plugin 'vim-scripts/FuzzyFinder'
-Plugin 'itchyny/lightline.vim'      
-Plugin 'Lokaltog/vim-easymotion'    
+Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-vinegar'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-commentary'
 Plugin 'ervandew/supertab'     
+Plugin 'mhinz/vim-startify'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'mileszs/ack.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 
 " Snippets 
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+
+" PHP automatic doc generation
 Plugin 'tobyS/pdv'
 Plugin 'tobyS/vmustache'
 
-" -- Front End
-Plugin 'mattn/emmet-vim'            
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'hail2u/vim-css3-syntax'     
-Plugin 'rking/ag.vim'     
-Plugin 'skwp/greplace.vim'     
-
-" -- Back end
+" -- php
 Plugin 'StanAngeloff/php.vim'     
 Plugin 'arnaud-lb/vim-php-namespace'     
-Plugin 'ludovicchabant/vim-gutentags'
 Plugin 'shawncplus/phpcomplete.vim'
-
-Plugin 'Shougo/vimproc.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'fatih/vim-go'
 Plugin 'joonty/vdebug'
+
+" GO
+Plugin 'fatih/vim-go'
+
+" Syntax
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'hail2u/vim-css3-syntax'     
+Plugin 'mattn/emmet-vim'            
 
 " Colors
 Plugin 'altercation/vim-colors-solarized'
@@ -392,3 +394,13 @@ endif
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
 " let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+" Use ag with ack
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+" airline
+set laststatus=2
+let g:airline_powerline_fonts = 1
+let g:airline_theme='gruvbox'
