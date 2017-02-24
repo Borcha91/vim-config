@@ -217,6 +217,9 @@ Plugin 'tomtom/tlib_vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-commentary'
 
+" Languages Plugins
+Plugin 'sheerun/vim-polyglot'
+
 " Autocomplete & Snippets 
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'SirVer/ultisnips'
@@ -235,7 +238,6 @@ Plugin 'skwp/greplace.vim'
 " -- Back end
 Plugin 'StanAngeloff/php.vim'     
 Plugin 'arnaud-lb/vim-php-namespace'     
-Plugin 'ludovicchabant/vim-gutentags'
 
 Plugin 'Shougo/vimproc.vim'
 Plugin 'airblade/vim-gitgutter'
@@ -358,14 +360,6 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-" enable omni-completion for Ruby and PHP
-call neocomplete#util#set_default_dictionary(
-            \'g:neocomplete#sources#omni#input_patterns', 'ruby',
-            \'[^. *\t]\.\h\w*\|\h\w*::\w*')
-call neocomplete#util#set_default_dictionary(
-            \'g:neocomplete#sources#omni#input_patterns',
-            \'php',
-            \'[^. \t]->\h\w*\|\h\w*::\w*')
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
@@ -377,4 +371,10 @@ endif
 
 " For perlomni.vim setting.
 " https://github.com/c9s/perlomni.vim
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+" let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+" Remapped blade files to html
+autocmd BufNewFile,BufRead *.blade.php setlocal ft=html
+
+" Files syntax
+autocmd BufNewFile,BufRead *.vue setlocal ft=vue
