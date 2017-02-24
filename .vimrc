@@ -74,6 +74,7 @@ nmap <C-K> <C-W><C-K>
 nmap <C-H> <C-W><C-H>
 nmap <C-L> <C-W><C-L>
 
+
 " H K L J should move the cursor
 noremap J <C-d>
 noremap K <C-U>
@@ -92,6 +93,7 @@ noremap gW B
 
 " Redo
 nnoremap U <C-r>
+
 
 " ---------------------- Split Manager ----------------------
 " ---------------------- NERDTREE      ----------------------
@@ -119,6 +121,7 @@ if has("gui_running")
     set guioptions-=r  " remove right-hand scroll bar
     set guioptions-=L  " remove left-hand scroll bar
 end
+
 
 " allow Tab and Shift+Tab to
 " tab  selection in visual mode
@@ -188,11 +191,6 @@ syntax enable
 " Enable 256 colors on gnome-terinal
 set t_Co=256
 
-colorscheme atom-dark-256
-if has("gui_running")
-    colorscheme atom-dark
-endif
-
 " select all mapping
 noremap <leader>a ggVG
 
@@ -203,50 +201,67 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" Start plugin defintion
+" start plugin defintion
 Plugin 'scrooloose/nerdtree'
 Plugin 'vim-scripts/L9'
 Plugin 'vim-scripts/FuzzyFinder'
-Plugin 'itchyny/lightline.vim'      
-Plugin 'Lokaltog/vim-easymotion'    
+Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-vinegar'
 Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'MarcWeber/vim-addon-mw-utils'
 Plugin 'tomtom/tlib_vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-commentary'
-
-" Languages Plugins
-Plugin 'sheerun/vim-polyglot'
+Plugin 'ervandew/supertab'     
+Plugin 'mhinz/vim-startify'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'vim-syntastic/syntastic'
+" This plugin worked way back but now it slows the hell down vim
+" Plugin 'ludovicchabant/vim-gutentags'
+Plugin 'mileszs/ack.vim'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'tpope/vim-fugitive'
+Plugin 'terryma/vim-multiple-cursors'
 
 " Autocomplete & Snippets 
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
+
+" PHP automatic doc generation
 Plugin 'tobyS/pdv'
 Plugin 'tobyS/vmustache'
-Plugin 'ervandew/supertab'     
 
-" -- Front End
-Plugin 'mattn/emmet-vim'            
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'hail2u/vim-css3-syntax'     
-Plugin 'rking/ag.vim'     
-Plugin 'skwp/greplace.vim'     
-
-" -- Back end
+" -- php
 Plugin 'StanAngeloff/php.vim'     
 Plugin 'arnaud-lb/vim-php-namespace'     
-
-Plugin 'Shougo/vimproc.vim'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'fatih/vim-go'
 Plugin 'joonty/vdebug'
+
+" GO
+Plugin 'fatih/vim-go'
+
+" Syntax
+Plugin 'sheerun/vim-polyglot'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'hail2u/vim-css3-syntax'     
+Plugin 'mattn/emmet-vim'            
+
+" Colors
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'dracula/vim'
+Plugin 'morhetz/gruvbox'
 
 " end plugin definition
 call vundle#end()            " required for vundle
+
+" colorscheme
+colorscheme gruvbox
+set background=dark
+let g:gruvbox_contrast_dark='medium'
+if has("gui_running")
+    colorscheme atom-dark
+endif
 
 " map FuzzyFinder
 noremap <leader>b :FufBuffer<cr>
@@ -360,12 +375,21 @@ autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" autocmd FileType php setlocal omnifunc=phpcomplete_extended#CompletePHP
+" enable omni-completion for Ruby and PHP
+    " call neocomplete#util#set_default_dictionary(
+    "       \'g:neocomplete#sources#omni#input_patterns', 'ruby',
+    "       \'[^. *\t]\.\h\w*\|\h\w*::\w*')
+    " call neocomplete#util#set_default_dictionary(
+    "       \'g:neocomplete#sources#omni#input_patterns',
+    "       \'php',
+    "       \'[^. \t]->\h\w*\|\h\w*::\w*')
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+" let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 "let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
@@ -378,3 +402,25 @@ autocmd BufNewFile,BufRead *.blade.php setlocal ft=html
 
 " Files syntax
 autocmd BufNewFile,BufRead *.vue setlocal ft=vue
+
+" Use ag with ack
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
+" airline
+set laststatus=2
+let g:airline_powerline_fonts = 1
+let g:airline_theme='gruvbox'
+
+" Workaround multiplecursor with neocomplete
+function! Multiple_cursors_before()
+    exe 'NeoCompleteLock'
+    echo 'Disabled autocomplete'
+endfunction
+
+function! Multiple_cursors_after()
+    exe 'NeoCompleteUnlock'
+    echo 'Enabled autocomplete'
+endfunction
+
