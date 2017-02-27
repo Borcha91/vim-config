@@ -223,6 +223,8 @@ Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'tpope/vim-fugitive'
 Plugin 'terryma/vim-multiple-cursors'
+Plugin 'edkolev/tmuxline.vim'
+Plugin 'edkolev/promptline.vim'
 
 " Autocomplete & Snippets 
 Plugin 'Shougo/neocomplete.vim'
@@ -411,7 +413,7 @@ endif
 " airline
 set laststatus=2
 let g:airline_powerline_fonts = 1
-let g:airline_theme='gruvbox'
+let g:airline_theme='tomorrow'
 
 " Workaround multiplecursor with neocomplete
 function! Multiple_cursors_before()
@@ -423,4 +425,7 @@ function! Multiple_cursors_after()
     exe 'NeoCompleteUnlock'
     echo 'Enabled autocomplete'
 endfunction
-
+let g:promptline_preset = {
+        \'a'    : ['',  promptline#slices#cwd() ],
+        \'b'    : [ promptline#slices#vcs_branch() ],
+        \'warn' : [ promptline#slices#last_exit_code() ]}

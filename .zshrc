@@ -4,6 +4,8 @@
 # Path to your oh-my-zsh installation.
   export ZSH=/home/borja/.oh-my-zsh
 
+# Change bloq mayus to escape
+setxkbmap -option caps:escape
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
@@ -87,3 +89,7 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+if [ -d "$HOME/.local/bin" ]; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+source ~/.shell_prompt.sh
